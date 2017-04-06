@@ -1,3 +1,7 @@
+function reverseString(str) {
+    return str.split("").reverse().join("");
+}
+
 var PalindromeSpace = function PalindromeSpace(graphData){
     this.graph = graphData;
     this.cursor = 0;
@@ -9,11 +13,14 @@ PalindromeSpace.prototype.nextWords = function(cursor){
     }
     var word = "";
     var workingWalks = [[cursor,word]];
-    var finishedWords = [];
+    var finishedForwardWalks = [];
+    var finishedReverseWalks = [];
     while(true) {
         var walk = workingWalks.pop();
         if (walk === undefined){
-            return finishedWords;
+            return {'fWalks': finishedForwardWalks,
+                    'rWalks': finishedReverseWalks,
+                   };
         }
         cursor = walk[0];
         word   = walk[1];
@@ -23,15 +30,15 @@ PalindromeSpace.prototype.nextWords = function(cursor){
         var markers = Object.keys(node);
         for (var i = 0; i < markers.length; i++){
             var marker = markers[i];
+            var newCursor = node[marker];
             if (marker == ">"){
-                finishedWords.push(word);
+                finishedForwardWalks.push([word,newCursor]);
             } else if (marker == "<"){
-                //FIXME for now skip this and go to next marker
+                finishedReverseWalks.push([reverseString(word),newCursor]);
             } else{
-                console.log("adding marker:",marker);
                 var newWord = word.concat(marker);
+                console.log("adding marker:",marker);
                 //descend down this marker's edge
-                var newCursor = node[marker];
                 console.log("going down to ",newCursor);
                 workingWalks.push([newCursor,newWord]);
             }
