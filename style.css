@@ -1,0 +1,33 @@
+#workingPalindrome {
+    font-size = 20px;
+}
+
+li:hover {
+    background-color: lightblue;
+}
+
+/*.wordSuggestions div{*/
+/*    vertical-align: top;*/
+/*    display: inline-block;*/
+/*    *display: inline;*/
+/*    zoom: 1*/
+/*}*/
+
+#forwardWordSuggestionsDiv{
+    float:left;
+    width:75%;
+    overflow:hidden;
+}
+
+#reverseWordSuggestionsDiv{
+    float:left;
+    width:25%;
+    overflow:hidden;
+}
+
+.wordSuggestions {
+    list-style-type: none;
+    margin: 2px;
+    padding: 10px;
+}
+
