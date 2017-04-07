@@ -6,6 +6,10 @@ li:hover {
     background-color: lightblue;
 }
 
+li:active {
+    border: 1px solid black;  
+}
+
 /*.wordSuggestions div{*/
 /*    vertical-align: top;*/
 /*    display: inline-block;*/
@@ -15,13 +19,13 @@ li:hover {
 
 #forwardWordSuggestionsDiv{
     float:left;
-    width:75%;
+    width:50%;
     overflow:hidden;
 }
 
 #reverseWordSuggestionsDiv{
     float:left;
-    width:25%;
+    width:50%;
     overflow:hidden;
 }
 
