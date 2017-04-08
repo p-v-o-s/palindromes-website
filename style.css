@@ -35,3 +35,6 @@ li:active {
     padding: 10px;
 }
 
+.completedPalindrome {
+    color: DarkGreen;
+}

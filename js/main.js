@@ -97,6 +97,12 @@ function buildWordSuggestions(ul, wordWalks, hide_backwards_termination_markers)
             ps.cursor = cursor;
             var a = document.getElementById("psCursor");
             a.textContent = String(ps.cursor);
+            var span = document.getElementById("workingPalindrome");
+            if (ps.cursor == 0){
+                span.setAttribute("class","completedPalindrome");
+            } else{
+                span.removeAttribute("class")
+            }
             //continue at new cursor location
             showNextWords(ps);
         }
