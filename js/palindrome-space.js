@@ -24,19 +24,26 @@ PalindromeSpace.prototype.nextWords = function(cursor){
         }
         cursor = walk[0];
         word   = walk[1];
-        console.log("Continuing walk at ", cursor, "\"" + word + "\"");
         //get the node in the graph
         var node = this.graph[cursor];
         var markers = Object.keys(node);
+        console.log("At node " + cursor + " available markers: " + markers);
         for (var i = 0; i < markers.length; i++){
             var marker = markers[i];
             var newCursor = node[marker];
+            var newWord = word.concat(marker);
+            console.log("Continuing walk at ", cursor, "\"" + word + "\" next marker \"" + marker + "\"");
             if (marker == ">"){
-                finishedForwardWalks.push([word,newCursor]);
+                console.log("Saving forward walk \"" + newWord + "\" -> " + newCursor);
+                finishedForwardWalks.push([newWord,newCursor]);
             } else if (marker == "<"){
-                finishedReverseWalks.push([reverseString(word),newCursor]);
+                //we want to bias the suggestions in favor of forward word completions
+                //so continue the walk after any reverse terminations
+                var revWord = reverseString(newWord);
+                console.log("Saving reverse walk \"" + revWord + "\" -> " + newCursor);
+                finishedReverseWalks.push([revWord,newCursor]);
+                workingWalks.push([newCursor,newWord]);
             } else{
-                var newWord = word.concat(marker);
                 console.log("adding marker:",marker);
                 //descend down this marker's edge
                 console.log("going down to ",newCursor);
@@ -46,6 +53,39 @@ PalindromeSpace.prototype.nextWords = function(cursor){
     }
 }
 
+// TEST SET: ['race;, 'car','said', 'i','as'] 
+//var ps = new PalindromeSpace([
+//{"i":24,"r":7,"s":16},
+//{"c":12},
+//{"<":0},
+//{"i":23},
+//{"a":25},
+//{"<":0},
+//{"<":0},
+//{"a":8},
+//{"c":10},
+//{"e":11},
+//{"<":9},
+//{">":1},
+//{"a":13},
+//{"r":15},
+//{">":0},
+//{"<":14,">":2},
+//{"a":18},
+//{"i":20},
+//{"<":17},
+//{"d":21},
+//{"<":19},
+//{">":3},
+//{">":0},
+//{">":4},
+//{"<":22,">":6},
+//{"s":27},
+//{">":0},
+//{"<":26,">":5}
+//]);
+
+// TEST SET: 1000 most frequent English words
 var ps = new PalindromeSpace([
 {"a":217,"d":483,"e":724,"f":327,"h":370,"i":283,"l":639,"m":500,"n":609,"o":257,"p":576,"r":787,"s":427,"t":204,"w":351},
 {"b":390,"c":536,"f":329,"h":369,"m":502,"n":610,"r":788,"s":430,"t":209,"u":565,"y":344},
