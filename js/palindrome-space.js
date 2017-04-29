@@ -16,7 +16,7 @@ PalindromeSpace.prototype.nextWords = function(cursor){
     var finishedForwardWalks = [];
     var finishedReverseWalks = [];
     while(true) {
-        var walk = workingWalks.pop();
+        var walk = workingWalks.shift();  //pull off first element
         if (walk === undefined){
             return {'fWalks': finishedForwardWalks,
                     'rWalks': finishedReverseWalks,

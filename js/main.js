@@ -122,7 +122,7 @@ $( document ).ready(function() {
     console.log( "Document ready!" );
     //for local json file loading hack see: http://stackoverflow.com/questions/335409/jquery-getjson-firefox-3-syntax-error-undefined
     $.ajax({
-      url: "data/MF1000.json",
+      url: "data/MF10000.json",
       dataType: "json",
       mimeType: "text/plain",
       success: function(data){
