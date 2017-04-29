@@ -1,4 +1,3 @@
-var nextWordsButton = document.getElementById("nextWordsButton");
 var DEBUG_MODE = false;
 
 function getEventTarget(e) {
@@ -16,9 +15,7 @@ document.onkeydown = function (e) {
     }
 };
 
-
-
-function buildWordSuggestions(ul, wordWalks, hide_backwards_termination_markers){
+function buildWordSuggestions(palindrome_space, ul, wordWalks, hide_backwards_termination_markers){
     if (hide_backwards_termination_markers == null){
         hide_backwards_termination_markers = !DEBUG_MODE;
     }
@@ -26,7 +23,7 @@ function buildWordSuggestions(ul, wordWalks, hide_backwards_termination_markers)
     console.log("function buildWordSuggestions:");
     console.log("\n\thide_backwards_termination_markers == " + hide_backwards_termination_markers);
     console.log("\n\ttextDirection == " + textDirection);
-    
+
     ul.innerHTML = ""; //blank out list
     for (var i = 0; i < wordWalks.length; i++){
         var word   = wordWalks[i][0];
@@ -94,17 +91,17 @@ function buildWordSuggestions(ul, wordWalks, hide_backwards_termination_markers)
                 a2.textContent = rWord + a2.textContent;
             }
             //update the palindrome space cursor and its display
-            ps.cursor = cursor;
+            palindrome_space.cursor = cursor;
             var a = document.getElementById("psCursor");
-            a.textContent = String(ps.cursor);
+            a.textContent = String(palindrome_space.cursor);
             var span = document.getElementById("workingPalindrome");
-            if (ps.cursor == 0){
+            if (palindrome_space.cursor == 0){
                 span.setAttribute("class","completedPalindrome");
             } else{
                 span.removeAttribute("class")
             }
             //continue at new cursor location
-            showNextWords(ps);
+            showNextWords(palindrome_space);
         }
     };
 }
@@ -114,17 +111,23 @@ function showNextWords(palindrome_space){
     var wordWalks = palindrome_space.nextWords();
     //add the forward word suggestions
     var ul1 = document.getElementById("forwardWordSuggestions");
-    buildWordSuggestions(ul1, wordWalks.fWalks);
+    buildWordSuggestions(palindrome_space, ul1, wordWalks.fWalks);
     //add the reverse word suggestions
     var ul2 = document.getElementById("reverseWordSuggestions");
-    buildWordSuggestions(ul2, wordWalks.rWalks);
+    buildWordSuggestions(palindrome_space, ul2, wordWalks.rWalks);
 }
-
-//nextWordsButton.onclick = function(){
-//    
-//};
-
-window.onload = function(){
-    //ps.cursor = 129;
-    showNextWords(ps);
-};
+////////////////////////////////////////////////////////////////////////////////
+// MAIN entry point
+$( document ).ready(function() {
+    console.log( "Document ready!" );
+    //for local json file loading hack see: http://stackoverflow.com/questions/335409/jquery-getjson-firefox-3-syntax-error-undefined
+    $.ajax({
+      url: "data/MF1000.json",
+      dataType: "json",
+      mimeType: "text/plain",
+      success: function(data){
+        var ps = new PalindromeSpace(data);
+        showNextWords(ps);
+      }
+    });
+});
